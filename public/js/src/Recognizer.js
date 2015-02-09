@@ -66,8 +66,9 @@ ar.Recognizer = function() {
 
             // Handle relative skeleton data
             var lastSkeleton = skeletonArray[skeletonArray.length - 1];
-            if (lastSkeleton)
+            if (lastSkeleton){
                 lastSkeleton.updateSphericalData();
+            }
 
             // Clear skeletons
             skeletonArray = [];
@@ -84,6 +85,20 @@ ar.Recognizer = function() {
                     if (result[actionName] > max) {
                         action = actionName;
                         max = result[actionName];
+                        
+                        var ad = lastSkeleton && lastSkeleton.absoluteData;
+                        var t = ad && ad.Torso && ad.Torso.elements;
+                        var depth = t && (Math.sqrt(t[0]*t[0] + t[1]*t[1] + t[2]*t[2]));
+
+                        //console.log(ad)
+                        var depth_msg = "Torso Distance : " + Math.round((depth*10000))/10000;
+                        var action_msg = "Action : " + action;
+                        if(depth) {
+                            document.getElementById("depth-display").innerHTML = depth_msg; 
+                            document.getElementById("action-display").innerHTML = action_msg; 
+                        }
+                        console.log(depth_msg);
+                        console.log(action_msg);
                     }
                 }
 

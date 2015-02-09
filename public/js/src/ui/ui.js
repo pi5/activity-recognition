@@ -10,8 +10,11 @@ ar.ui = function(opt_options) {
     ar.ui.Renderer = new THREE.WebGLRenderer({ alpha: this.options.alphaRenderer });
 
     // Append renderer into dom.
-    ar.ui.Renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(ar.ui.Renderer.domElement);
+    //ar.ui.Renderer.setSize(window.innerWidth, window.innerHeight);
+    //document.body.appendChild(ar.ui.Renderer.domElement);
+    var rdiv = document.getElementById("renderer-div");
+    ar.ui.Renderer.setSize(500, 300);
+    rdiv.appendChild(ar.ui.Renderer.domElement);
 };
 
 

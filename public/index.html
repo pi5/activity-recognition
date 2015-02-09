@@ -20,8 +20,14 @@
     <script src='./js/src/helpers/ViewHelper.js'></script>
 </head>
 <body>
-    <div id="fps"></div>
-    <div id="actionName"></div>
+    <div id="renderer-div-container" style="width:500px; height:300px; border:2px solid red;">
+        <div id="renderer-div">
+            <div id="fps"></div>
+            <div id="actionName"></div>
+        </div>
+    </div>
+    <div id="depth-display" style="font-size:30px; font-weight:bold"></div>
+    <div id="action-display" style="font-size:30px; font-weight:bold"></div>
 
     <script>
         var socket = io();

@@ -31,9 +31,15 @@ SocketModel.prototype.init = function() {
         });
 
         socket.on('recognize', function (data, fn) {
-            fn(ActivityRecognizer.run(data));
+            var actions = ActivityRecognizer.run(data);
+            recordActions(data, actions);
+            fn(actions);
         });
     });
+
+    function recordActions(data, actions) {
+        console.log(data, actions);    
+    }
 };
 
 
