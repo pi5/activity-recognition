@@ -10,15 +10,60 @@ ar.Recognizer = function() {
     ar.ui.Camera.up = new THREE.Vector3(0, 1, 0);
     ar.ui.Camera.lookAt(new THREE.Vector3(0, 0, 5));
 
+   
+    // Flot chart related initializations
+    // TODO: Find appropriate place 
+    
+
+
+    var data = [], initRes = [],
+            totalPoints = 300; 
+
+    for (var i=0; i<300; i++){
+        data.push(50);
+        initRes.push([i,50]);
+    }
+
+    var plot = $.plot("#placeholder", [ initRes ], {
+            series: {
+                shadowSize: 0   // Drawing is faster without shadows
+            },
+            yaxis: {
+                min: 0,
+                max: 100
+            },
+            xaxis: {
+                show: false
+            }
+        });
+
+    socket.on('radardata', function(value) {
+        //console.log(value);    
+        var res = getPlotData(+(value.data)); 
+        //console.log(res);
+        plot.setData([res]);
+        plot.draw();
+    });
+
+    function getPlotData(value) {
+
+            if (data.length > 0) {
+                data = data.slice(1);
+                data.push(value);
+            }
+
+            var res = [];
+            for (var i = 0; i < data.length; ++i) {
+                res.push([i, data[i]]);
+            }
+
+            return res;
+    }
+
+
+    
     // Render loop
     var lastRenderedDate = new Date().getTime();
-    
-    //sigma = 0;
-    socket.on('radardata', function(data) {
-        //sigma = sigma + 1;
-        //console.log(sigma);
-        console.log(data);    
-    });
 
     function render() {
         // Update user skeleton positions if exists
@@ -36,10 +81,6 @@ ar.Recognizer = function() {
         $('#fps').text('FPS: ' + fps);
         lastRenderedDate = new Date().getTime();
 
-        // Request radar data
-        socket.emit('getRadarData', {
-            dummy: {} 
-        });
         // Callback
         requestAnimationFrame(render);
     }
