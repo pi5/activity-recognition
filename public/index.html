@@ -20,14 +20,20 @@
     <script src='./js/src/helpers/ViewHelper.js'></script>
 </head>
 <body>
-    <div id="renderer-div-container" style="width:500px; height:300px; border:2px solid red;">
-        <div id="renderer-div">
-            <div id="fps"></div>
-            <div id="actionName"></div>
-        </div>
+    <div id="renderer-div-container" class="section">
+        <div id="renderer-div"></div>
     </div>
-    <div id="depth-display" style="font-size:30px; font-weight:bold"></div>
-    <div id="action-display" style="font-size:30px; font-weight:bold"></div>
+    <div id="flot-container" class="section">
+        <div id="flot-graph"></div>
+    </div>
+    
+    <div id="fps"></div>
+    <div id="stat-container" class="section">
+        
+        <div id="actionName"></div>
+        <div id="depth-display" style="font-size:30px; font-weight:bold"></div>
+        <div id="action-display" style="font-size:30px; font-weight:bold"></div>
+    </div>
 
     <script>
         var socket = io();

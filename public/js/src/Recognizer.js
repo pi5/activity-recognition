@@ -12,6 +12,14 @@ ar.Recognizer = function() {
 
     // Render loop
     var lastRenderedDate = new Date().getTime();
+    
+    //sigma = 0;
+    socket.on('radardata', function(data) {
+        //sigma = sigma + 1;
+        //console.log(sigma);
+        console.log(data);    
+    });
+
     function render() {
         // Update user skeleton positions if exists
         if (users) {
@@ -28,6 +36,10 @@ ar.Recognizer = function() {
         $('#fps').text('FPS: ' + fps);
         lastRenderedDate = new Date().getTime();
 
+        // Request radar data
+        socket.emit('getRadarData', {
+            dummy: {} 
+        });
         // Callback
         requestAnimationFrame(render);
     }
