@@ -14,5 +14,5 @@ for x in range(0,100000):
     i=str(random.randint(1,100))
     radar_serv.sendto(i, (HOST,PORT))
     print i
-    time.sleep(0.01)
+    time.sleep(0.1)
 radar_serv.close()

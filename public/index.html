@@ -27,7 +27,6 @@
 
 
     <script>
-
         function startImageStream() {
             console.log("Image stream");
             var plugin = document.getElementById("ZigPlugin");
@@ -65,19 +64,18 @@
     <div id="renderer-div-container" class="section">
         <div id="renderer-div"></div>
     </div>
+    <div id="rgb-container" class="section">
+        <canvas id="canvas"></canvas>
+    </div>
     <div id="flot-container" class="section">
         <div id="placeholder" class="flot-placeholder"></div>
     </div>
     
     <div id="fps"></div>
     <div id="stat-container" class="section">
-        
         <div id="actionName"></div>
         <div id="depth-display" style="font-size:30px; font-weight:bold"></div>
         <div id="action-display" style="font-size:30px; font-weight:bold"></div>
-    </div>
-    <div id="rgb-container" class="section">
-        <canvas id="canvas"></canvas>
     </div>
     <div id="pluginContainer">
         <object id="ZigPlugin" type="application/x-zig" width="0" height="0">
