@@ -148,8 +148,8 @@ ar.Recognizer = function() {
                             document.getElementById("depth-display").innerHTML = depth_msg; 
                             document.getElementById("action-display").innerHTML = action_msg; 
                         }
-                        console.log(depth_msg);
-                        console.log(action_msg);
+                        //console.log(depth_msg);
+                        //console.log(action_msg);
                     }
                 }
 

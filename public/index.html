@@ -11,6 +11,8 @@
     <script src='./js/lib/sylvester.js'></script>
     <script src='./js/lib/jquery-1.11.1.min.js'></script>
     <script src='./js/lib/jquery.flot.js'></script>
+    <script src='./js/lib/ZigStreamDecoders.js'></script>
+    <script src='./js/lib/Base64.js'></script>
 
     <script src='./js/src/Recognizer.js'></script>
     <script src='./js/src/helpers/CoordinateHelper.js'></script>
@@ -21,7 +23,43 @@
     <script src='./js/src/helpers/ViewHelper.js'></script>
     <script type="text/javascript">
 
-    </script> 
+    </script>
+
+
+    <script>
+
+        function startImageStream() {
+            console.log("Image stream");
+            var plugin = document.getElementById("ZigPlugin");
+            plugin.requestStreams({updateDepth: true, updateImage: true, updateLabelMap: false});
+            // every frame, draw the rgb image and skeleton
+            plugin.addEventListener("NewFrame", function () {
+                // get the rgb image from the sensor
+                var imageBuffer = imageToCanvas(plugin);
+                // resize the canvas to the window size
+                var canvas = document.getElementById('canvas');
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                var realCtx = canvas.getContext('2d');
+                var widthScale = canvas.width / imageBuffer.width;
+                var newHeight = imageBuffer.height * widthScale;
+                var newWidth = canvas.width;
+                var scale = widthScale;
+                if (newHeight > canvas.height) {
+                    //calling based on width made it to tall, go by height
+                    var heightScale = canvas.height / imageBuffer.height;
+                    newWidth = imageBuffer.width * heightScale;
+                    newHeight = canvas.height;
+                    scale = heightScale;
+                }
+                // scale the sensor image and draw it to the screen
+                realCtx.drawImage(imageBuffer, 0, 0, newWidth, newHeight);
+                // scale and draw the skeleton
+                //skeleton.draw(canvas, scale);
+            }, false);
+        }
+    </script>
+ 
 </head>
 <body>
     <div id="renderer-div-container" class="section">
@@ -38,13 +76,21 @@
         <div id="depth-display" style="font-size:30px; font-weight:bold"></div>
         <div id="action-display" style="font-size:30px; font-weight:bold"></div>
     </div>
-
+    <div id="rgb-container" class="section">
+        <canvas id="canvas"></canvas>
+    </div>
+    <div id="pluginContainer">
+        <object id="ZigPlugin" type="application/x-zig" width="0" height="0">
+            <param name="onload" value="pluginLoaded"/>
+        </object>
+    </div> 
     <script>
         var socket = io();
         document.addEventListener('DOMContentLoaded', function() {
             // Load zigfu
             zig.addEventListener('loaded', function() {
                 new ar.Recognizer();
+                startImageStream();
             });
         }, false);
     </script>

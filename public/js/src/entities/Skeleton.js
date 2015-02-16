@@ -56,7 +56,6 @@ ar.Skeleton.MetricDivider = 1000;
  */
 ar.Skeleton.prototype.updateData = function(rawData) {
     this.preprocessRawData(rawData);
-
     this.absoluteData = this.mapAbsoluteData(rawData);
     this.relativeData = this.mapRelativeData(rawData);
 };
