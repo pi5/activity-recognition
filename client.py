@@ -11,8 +11,8 @@ radar_serv.connect((HOST, PORT))
 
 x = 0
 for x in range(0,100000):
-    #radar_serv.send(str(random.randint(1,1000)) + "\n")
-    #radar_serv.sendall(str(x) + "\n")
-    radar_serv.sendto(str(random.randint(1,100)), (HOST,PORT))
+    i=str(random.randint(1,100))
+    radar_serv.sendto(i, (HOST,PORT))
+    print i
     time.sleep(0.01)
 radar_serv.close()

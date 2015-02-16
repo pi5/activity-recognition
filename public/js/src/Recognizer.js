@@ -60,8 +60,6 @@ ar.Recognizer = function() {
             return res;
     }
 
-
-    
     // Render loop
     var lastRenderedDate = new Date().getTime();
 

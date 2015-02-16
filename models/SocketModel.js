@@ -2,7 +2,7 @@ var io,
     self,
     ActivityRecognizer = require('./ActivityRecognizer');
     var net = require('net');
-
+    var fs = require('fs');
 
 /**
  * Socket model constuctor.
@@ -26,6 +26,9 @@ SocketModel.prototype.init = function() {
     var that = this;
     io.on('connection', function (socket) {
         console.log('A connection has arrived!');
+        
+        /* Variable to record radar data */
+        var radar_data = [];
 
         var server = net.createServer(function(c) { 
             console.log('client connected');
@@ -34,7 +37,14 @@ SocketModel.prototype.init = function() {
             });
 
             c.on('data', function(data) {
-                console.log(data.toString('utf8'));   
+
+                // Avoid out of memory errors by trimming 
+                // the radar_data if more than 1000 values get accumulated
+                if(radar_data.length > 1000) {
+                    radar_data.splice(0);
+                }
+
+                radar_data.push(data.toString('utf8'));
                 socket.emit('radardata', {
                     data:data.toString('utf8')
                 });
@@ -51,22 +61,41 @@ SocketModel.prototype.init = function() {
             });
         });
         
-        //socket.on('getRadarData', function(){
-            //console.log('getRadarData()');
-            //socket.emit('recordRadarData', {
-                //data:"some random data"    
-            //});
-        //});
+        socket.on('recognize', function (skeleton_data, fn) {
 
-        socket.on('recognize', function (data, fn) {
-            var actions = ActivityRecognizer.run(data);
-            recordActions(data, actions);
+            // To remove excessive elements in the buffer
+            // Expecting the radar sampling rate at a max of 250
+            if(radar_data.length > 250) {
+                radar_data.splice(0);
+                return;
+            }
+
+            var actions = ActivityRecognizer.run(skeleton_data);
+            recordActions(skeleton_data, radar_data, actions);
+            //console.log(radar_data.length);
+            radar_data.splice(0);
             fn(actions);
         });
     });
 
-    function recordActions(data, actions) {
-        console.log(data, actions);    
+    function recordActions(skeleton_data, radar_data, actions) {
+        var recorded_data = { 
+            "skeleton_data":skeleton_data,
+            "radar_data":radar_data,
+            "actions":actions,
+            "timestamp":Date.now()
+        };
+
+        var recorded_data_str = JSON.stringify(recorded_data);
+        recorded_data_str = "\n" + recorded_data_str;
+        //console.log(recorded_data_str);
+
+        fs.appendFile('recorded_data/log.txt', recorded_data_str, function (err) {
+            if (err) throw err;
+            console.log(Date.now() + ': Data recorded in file.');
+        });
+
+
     }
 };
 

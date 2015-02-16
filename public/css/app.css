@@ -41,7 +41,7 @@ div[id^="histogramBarP"] { background: cornflowerblue; }
 .section {
     width:500px;
     height:300px; 
-    border:2px solid red;
+    border:2px solid white;
     float:left;
     padding:20px;
 }
