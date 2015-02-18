@@ -16,11 +16,21 @@ ar.Recognizer = function() {
     
 
 
-    var data = [], initRes = [],
-            totalPoints = 300; 
+    var data = {
+        i:[],
+        q:[],
+        phase:[],
+    };
+    
+    var initRes = [],
+            totalPoints = 100; 
 
-    for (var i=0; i<300; i++){
-        data.push(50);
+            
+
+    for (var i=0; i<totalPoints; i++){
+        data.i.push(50);
+        data.q.push(50);
+        data.phase.push(50);
         initRes.push([i,50]);
     }
 
@@ -37,25 +47,77 @@ ar.Recognizer = function() {
             }
         });
 
+    var plot2 = $.plot("#placeholder2", [ initRes ], {
+            series: {
+                shadowSize: 0   // Drawing is faster without shadows
+            },
+            yaxis: {
+                min: 0,
+                max: 100
+            },
+            xaxis: {
+                show: false
+            }
+        });
+
     socket.on('radardata', function(value) {
         //console.log(value);    
-        var res = getPlotData(+(value.data)); 
-        //console.log(res);
-        plot.setData([res]);
+        var res = getPlotData(value.data); 
+        console.log(res);
+
+        /* Plot the i and q channels */ 
+        plot.setData([res[0], res[1]]);
         plot.draw();
+
+        /* Plot the phase values */
+        plot2.setData([res[2]]);
+        plot2.draw();
     });
 
-    function getPlotData(value) {
+    function getPlotData(val) {
+            var v = val.split(',');
+            var i_val = +(v[0]);
+            var q_val = +(v[1]);
+            var phase_val = +(v[2]);
+            
+           
+           /* Remove the initial value form the three sensors 
+            * and add the new value*/ 
+            if (data.i.length > 0) {
+                data.i = data.i.slice(1);
+                data.i.push(i_val);
+            }
 
-            if (data.length > 0) {
-                data = data.slice(1);
-                data.push(value);
+            if (data.q.length > 0) {
+                data.q = data.q.slice(1);
+                data.q.push(q_val);
+            }
+
+            if (data.phase.length > 0) {
+                data.phase = data.phase.slice(1);
+                data.phase.push(phase_val);
             }
 
             var res = [];
-            for (var i = 0; i < data.length; ++i) {
-                res.push([i, data[i]]);
+            var i_plot = [];
+            var q_plot = [];
+            var phase_plot = [];
+
+            /* Get the values ready for plotting */
+            for (var i = 0; i < data.i.length; ++i) {
+                i_plot.push([i, data.i[i]]);
             }
+
+            for (var i = 0; i < data.q.length; ++i) {
+                q_plot.push([i, data.q[i]]);
+            }
+            
+            for (var i = 0; i < data.phase.length; ++i) {
+                phase_plot.push([i, data.phase[i]]);
+            }
+            res.push(i_plot);
+            res.push(q_plot);
+            res.push(phase_plot);
 
             return res;
     }
