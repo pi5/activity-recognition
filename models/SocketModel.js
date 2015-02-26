@@ -79,6 +79,7 @@ SocketModel.prototype.init = function() {
     });
 
     function recordActions(skeleton_data, radar_data, actions) {
+        var radar_vps = radar_data.length;
         var recorded_data = { 
             "skeleton_data":skeleton_data,
             "radar_data":radar_data,
@@ -92,7 +93,7 @@ SocketModel.prototype.init = function() {
 
         fs.appendFile('recorded_data/log.txt', recorded_data_str, function (err) {
             if (err) throw err;
-            console.log(Date.now() + ': Data recorded in file.');
+            console.log(Date.now() + ': Data recorded in file. Radar values recorded: ' + radar_vps );
         });
 
 

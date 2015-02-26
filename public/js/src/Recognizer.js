@@ -23,7 +23,7 @@ ar.Recognizer = function() {
     };
     
     var initRes = [],
-            totalPoints = 100; 
+            totalPoints = 400; 
 
             
 
@@ -39,8 +39,8 @@ ar.Recognizer = function() {
                 shadowSize: 0   // Drawing is faster without shadows
             },
             yaxis: {
-                min: 0,
-                max: 100
+                min: 1800,
+                max: 2300
             },
             xaxis: {
                 show: false
@@ -52,8 +52,8 @@ ar.Recognizer = function() {
                 shadowSize: 0   // Drawing is faster without shadows
             },
             yaxis: {
-                min: 0,
-                max: 100
+                min: 0.7,
+                max: 0.9
             },
             xaxis: {
                 show: false
