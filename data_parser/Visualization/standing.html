@@ -11,7 +11,7 @@
 
 	$(function() {
         
-        $.getJSON("max_displacement.json", function(data){
+        $.getJSON("data/standing.json", function(data){
             var plot_data = {}
             var i = 0;
             $.each(data, function(key, value) {
@@ -75,7 +75,7 @@
 <body>
 
 	<div id="header">
-		<h2>Max displacements: Right Hand Waving</h2>
+		<h2>Max displacements: Standing</h2>
 	</div>
 
 	<div id="content">

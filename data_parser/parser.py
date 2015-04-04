@@ -35,8 +35,8 @@ def parsefile (s):
         for joint in j['skeleton_data']['skeleton']:
             disp = 0
             for i in range(0,3):
-                #print "\t", j['skeleton_data']['skeleton'][joint][i], "\t", j['skeleton_data']['maxDisplacement'][joint][i] 
-                disp = disp + math.pow(j['skeleton_data']['maxDisplacement'][joint][i], 2)
+                print "\t", joint, "\t", j['skeleton_data']['skeleton'][joint][i], "\t", j['skeleton_data']['maxCartesian'][joint][i] 
+                disp = disp + math.pow(j['skeleton_data']['maxCartesian'][joint][i], 2)
                 
             arr[joint].append([idx,disp])
 
@@ -47,7 +47,7 @@ def parsefile (s):
     print "File max_displacement.json written: Visualization/max_displacement.json"
 
 def main():
-    f = "../recorded_data/Feb19_2_19pm/wave_right_hand.txt"
+    f = "log.txt"
     parsefile(f)
 
 

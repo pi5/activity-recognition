@@ -11,7 +11,7 @@
 
 	$(function() {
         
-        $.getJSON("max_displacement.json", function(data){
+        $.getJSON("max_displacement_left.json", function(data){
             var plot_data = {}
             var i = 0;
             $.each(data, function(key, value) {
@@ -49,7 +49,7 @@
                         $.plot("#placeholder", data, {
                             yaxis: {
                                 min: 0,
-                                max: 25
+                                max: 1
                             },
                             xaxis: {
                                 min: 0,
@@ -75,7 +75,7 @@
 <body>
 
 	<div id="header">
-		<h2>Max displacements: Right Hand Waving</h2>
+		<h2>Max displacements: Left Hand Waving</h2>
 	</div>
 
 	<div id="content">
