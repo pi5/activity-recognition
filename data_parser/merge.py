@@ -8,8 +8,10 @@ def get_radar_vals(f):
 
     d = {}
     for line in lines:
-        ts = line.split(',')[0].strip()
-        d[ts] = line[15:].rstrip('\n').rstrip('\r')
+        if len(line) > 0:
+            ts = line.split(',')[0].strip()
+            if len(ts) > 0:
+                d[ts] = line[14:].rstrip('\n').rstrip('\r')
 
     return d
 
@@ -24,13 +26,13 @@ def get_vals_in_range(start, end):
     s = ""
     count = 0
     for x in range(start, end):
-        try:
-            s = s + "," + radar_vals[x]
+        index = str(x)
+        if index in radar_vals:
+            s = s + "," + radar_vals[index]
             count = count + 1
-        except:
-            pass
-    print "Copied ", count, "values in range ", start, end
+    print "Found ", count, "values in range ", start, end
     return s
+
 
 def main():
     f = open("log.txt", 'r')
@@ -48,18 +50,12 @@ def main():
         else:
             curr = j['timestamp']
             s = get_vals_in_range(prev, curr)
-            j['radar_data'] = s
-            vals = get_vals_in_range (prev, curr)
-            prev = curr
-            #print j
-            #with open('data.txt', 'a') as outfile:
-            t = json.dumps(j) + "\n"
-            f.write(t)
+            if len(s) > 0:
+                j['radar_data'] = s
+                prev = curr
+                t = json.dumps(j) + "\n"
+                f.write(t)
     f.close()
 
-
-
-
-#print radar_vals
 main()
 
