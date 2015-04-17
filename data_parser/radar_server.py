@@ -2,7 +2,7 @@ import os, socket, sys, time
 
 HOST = '192.168.1.122'
 PORT = 8888
-COLLECTION_TIME = 30
+COLLECTION_TIME = 180
 SAMPLES = 1000
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

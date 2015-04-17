@@ -30,29 +30,29 @@ SocketModel.prototype.init = function() {
         /* Variable to record radar data */
         var radar_data = [];
 
-        var server = net.createServer(function(c) { 
-            console.log('client connected');
-            c.on('end', function() {
-                console.log('client disconnected');
-            });
+        //var server = net.createServer(function(c) { 
+            //console.log('client connected');
+            //c.on('end', function() {
+                //console.log('client disconnected');
+            //});
 
-            c.on('data', function(data) {
+            //c.on('data', function(data) {
 
-                // Avoid out of memory errors by trimming 
-                // the radar_data if more than 1000 values get accumulated
-                if(radar_data.length > 1000) {
-                    radar_data.splice(0);
-                }
+                //// Avoid out of memory errors by trimming 
+                //// the radar_data if more than 1000 values get accumulated
+                //if(radar_data.length > 1000) {
+                    //radar_data.splice(0);
+                //}
 
-                radar_data.push(data.toString('utf8'));
-                socket.emit('radardata', {
-                    data:data.toString('utf8')
-                });
-            });
-        });
-        server.listen(8124, function() {
-            console.log("Radar data server listening on 8124"); 
-        });
+                //radar_data.push(data.toString('utf8'));
+                //socket.emit('radardata', {
+                    //data:data.toString('utf8')
+                //});
+            //});
+        //});
+        //server.listen(8124, function() {
+            //console.log("Radar data server listening on 8124"); 
+        //});
 
         socket.on('disconnect', function(){
             console.log('user disconnected');

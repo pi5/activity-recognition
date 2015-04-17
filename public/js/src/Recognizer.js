@@ -189,7 +189,9 @@ ar.Recognizer = function() {
             // Send data to backend for activity recognizing
             socket.emit('recognize', {
                 skeleton: lastSkeleton.relativeSphericalData,
-                maxDisplacement: maxDisplacement.sphericalData
+                //maxDisplacement: maxDisplacement.sphericalData
+                maxDisplacement: maxDisplacement.sphericalData,
+                maxCartesian: maxDisplacement.cartesianData
             }, function (result) {
                 var action = null,
                     max = 0;

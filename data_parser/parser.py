@@ -41,14 +41,14 @@ def parsefile (s):
             arr[joint].append([idx,disp])
 
     print arr
-    with open('Visualization/max_displacement.json','w') as outfile:
+    with open('max_displacement.json','w') as outfile:
         json.dump(arr, outfile, sort_keys = True, indent = 4, ensure_ascii=False)
 
-    print "File max_displacement.json written: Visualization/max_displacement.json"
+    print "File max_displacement.json written: max_displacement.json"
 
 def main():
-    f = "log.txt"
-    parsefile(f)
+    #f = "merged_log.txt"
+    parsefile(sys.argv[1])
 
 
 main()
