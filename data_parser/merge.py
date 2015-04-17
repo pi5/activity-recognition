@@ -1,5 +1,12 @@
 import sys
 import json
+import glob
+
+infile = sys.argv[1]
+radar_vals = {}
+#radarfile = sys.argv[2]
+#outfile = sys.argv[3]
+
 
 def get_radar_vals(f):
     fp = open(f, 'r')
@@ -15,8 +22,6 @@ def get_radar_vals(f):
 
     return d
 
-radar_vals = get_radar_vals("radar_log.txt")
-
 
 def getJSON (s):
     j = json.loads(s)
@@ -27,35 +32,46 @@ def get_vals_in_range(start, end):
     count = 0
     for x in range(start, end):
         index = str(x)
+        #print radar_vals
         if index in radar_vals:
             s = s + "," + radar_vals[index]
             count = count + 1
-    print "Found ", count, "values in range ", start, end
+    if count > 0:
+        print "Found ", count, "values in range ", start, end
     return s
 
 
 def main():
-    f = open("log.txt", 'r')
+    global radar_vals
+    f = open(infile, 'r')
     lines = f.readlines();
     f.close()
 
-    f = open("merged_log.txt",'w')
-    prev = 0
-    curr = 0
-    for line in lines:
-        j = getJSON(line);
-        if prev == 0:
-            prev = j['timestamp']
-        
-        else:
-            curr = j['timestamp']
-            s = get_vals_in_range(prev, curr)
-            if len(s) > 0:
-                j['radar_data'] = s
+    for filename in glob.glob("*.txt"):
+        print filename
+        radar_vals = get_radar_vals(filename)
+        #print radar_vals
+
+        f = open("merged/" + filename + ".merged",'w')
+        prev = 0
+        curr = 0
+        for line in lines:
+            j = getJSON(line);
+            if prev == 0:
+                prev = j['timestamp']
+            
+            else:
+                curr = j['timestamp']
+                #print prev, curr
+                s = get_vals_in_range(prev, curr)
+                if len(s) > 0:
+                    #print s
+                    j['radar_data'] = s
+                    t = json.dumps(j) + "\n"
+                    f.write(t)
                 prev = curr
-                t = json.dumps(j) + "\n"
-                f.write(t)
-    f.close()
+
+        f.close()
 
 main()
 
